@@ -1,0 +1,9 @@
+# Heavy intermediate output from the GPU box (regenerable)
+vps/frames_*/
+vps/tf_*/
+vps/test_frames/
+vps/st_out/
+node_modules/
+
+__pycache__/
+*.pyc
