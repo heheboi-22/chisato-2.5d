@@ -52,9 +52,10 @@ def missing_body(src, parts, min_area, overlap):
     """RGBA of the character in `src` that no part covers, below the top of the clothes."""
     rgb = src[..., :3].astype(np.int16)
     whiteness = rgb.min(-1)
-    # Background: the near-white region connected to the picture's edge.
+    # Background: the near-white region connected to the top or side edges. Not the bottom edge:
+    # the body is cut off there, and white clothes touching it would count as background.
     lab, _ = ndimage.label(whiteness > 235)
-    edge = np.unique(np.concatenate([lab[0], lab[-1], lab[:, 0], lab[:, -1]]))
+    edge = np.unique(np.concatenate([lab[0], lab[:, 0], lab[:, -1]]))
     bg = np.isin(lab, edge[edge > 0])
     fg = ~bg
 
@@ -128,7 +129,23 @@ def main():
     if not args.keep_neck and "neck" in index and "topwear" in index:
         neck = parts[index["neck"]][1]
         k = index["topwear"]
-        parts[k][1] = over(parts[k][1], neck)       # clothes in front of the neck
+        top = parts[k][1]
+        if args.fill_from:
+            # See-through can paint the inside of a high collar (dark) over the neck. Where both
+            # layers cover a pixel, keep whichever matches the source picture.
+            both = (neck[..., 3] > 128) & (top[..., 3] > 128)
+            d_neck = np.abs(neck[..., :3].astype(np.int16) - src[..., :3]).sum(-1)
+            d_top = np.abs(top[..., :3].astype(np.int16) - src[..., :3]).sum(-1)
+            neck_front = ndimage.binary_closing(
+                ndimage.binary_opening(both & (d_neck + 30 < d_top), iterations=2), iterations=2)
+            lab, n = ndimage.label(neck_front)
+            sizes = ndimage.sum(neck_front, lab, range(1, n + 1))
+            neck_front = np.isin(lab, 1 + np.nonzero(sizes >= 300)[0])
+            if neck_front.any():
+                print(f"  neck shown over clothes: {int(neck_front.sum())} px")
+                top = top.copy()
+                top[neck_front, 3] = 0
+        parts[k][1] = over(top, neck)               # clothes in front of the neck
         parts = [p for p in parts if p[0] != "neck"]
 
     # Hair ribbons and clips sit on the hair, but See-through's depth puts the front hair over

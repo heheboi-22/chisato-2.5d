@@ -7,14 +7,14 @@
 <meta name="description" content="Drop a layered PSD and it is auto-rigged and ready to move: a 2.5D avatar tool">
 <title>Anime2.5DRig — Drop a PSD, get a moving avatar</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23421827'/%3E%3Ctext x='16' y='23' font-size='20' font-family='sans-serif' font-weight='800' text-anchor='middle' fill='%23ff9cb0'%3EA%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="lib/app.css">
+<link rel="stylesheet" href="lib/app.css?v=20261101c">
 </head>
 <body>
 <header>
   <div class="brand"><span class="brand-mark" aria-hidden="true">A</span><div><h1>Anime2.5DRig</h1><span>2.5D AVATAR STUDIO · <span id="appVersion">v2.0</span></span></div></div>
   <div class="sample-actions" role="group" aria-label="Load a sample">
-    <button class="btn" type="button" data-sample="A" title="Load chisato.psd">Chisato A</button>
-    <button class="btn" type="button" data-sample="B" title="Load chisato_b.psd">Chisato B</button>
+    <button class="btn" type="button" data-sample="B" title="Load chisato_b.psd">Chisato</button>
+    <button class="btn" type="button" data-sample="AN" title="Load anisphia.psd">Anisphia</button>
   </div>
   <span id="modelName">No model loaded</span>
   <button class="obs-chip" type="button" id="obsChip" hidden title="Open OBS integration settings">OBS</button>
@@ -56,8 +56,8 @@
       <p class="drop-hint">RGB / 8-bit PSD, up to 128MB<br>Layer names like face / eyewhite / mouth_open (Japanese names also work). Folders supported.</p>
       <div class="btns drop-actions">
         <button class="btn primary" type="button" id="btnFile">Choose PSD file</button>
-        <button class="btn" type="button" data-sample="A" title="Load chisato.psd">Load Chisato A</button>
-        <button class="btn" type="button" data-sample="B" title="Load chisato_b.psd">Load Chisato B</button>
+        <button class="btn" type="button" data-sample="B" title="Load chisato_b.psd">Load Chisato</button>
+        <button class="btn" type="button" data-sample="AN" title="Load anisphia.psd">Load Anisphia</button>
         <button class="btn" type="button" id="btnReadme2">Read the README</button>
       </div>
       <div class="progress" id="loadProgress" hidden><span></span></div>
@@ -222,15 +222,15 @@
   <div class="dialog-head"><b id="shortcutTitle">Keyboard shortcuts</b><button class="btn" type="button" id="shortcutClose" aria-label="Close shortcuts">✕</button></div>
   <div class="dialog-body"><table class="shortcut-table" id="shortcutTable"></table></div>
 </div></div>
-<script src="lib/ag-psd.min.js"></script>
-<script src="lib/rigger.js"></script>
-<script src="lib/genericparts.js"></script>
-<script src="lib/runtime.js"></script>
-<script src="lib/face-features.js"></script>
-<script src="lib/renderer.js"></script>
-<script src="lib/devices.js"></script>
-<script src="lib/recorder.js"></script>
-<script src="lib/obs-sync.js"></script>
-<script src="lib/app.js"></script>
+<script src="lib/ag-psd.min.js?v=20261101c"></script>
+<script src="lib/rigger.js?v=20261101c"></script>
+<script src="lib/genericparts.js?v=20261101c"></script>
+<script src="lib/runtime.js?v=20261101c"></script>
+<script src="lib/face-features.js?v=20261101c"></script>
+<script src="lib/renderer.js?v=20261101c"></script>
+<script src="lib/devices.js?v=20261101c"></script>
+<script src="lib/recorder.js?v=20261101c"></script>
+<script src="lib/obs-sync.js?v=20261101c"></script>
+<script src="lib/app.js?v=20261101c"></script>
 </body>
 </html>

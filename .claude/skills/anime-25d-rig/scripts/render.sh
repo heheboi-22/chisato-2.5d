@@ -6,7 +6,7 @@
 # Env: CHROME (Chrome/Chromium binary, required), PY (python with Pillow+numpy, default python3),
 #      puppeteer-core installed in the working dir (npm i puppeteer-core@23) or on NODE_PATH,
 #      PORT (default 8765), BG_INNER / BG_OUTER (background colours, hex), POINTER=0 to not
-#      follow a scripted pointer.
+#      follow a scripted pointer, QUERY (extra URL query, e.g. settings=talk.json).
 set -euo pipefail
 RIG=${1:?rig dir}; MODEL=${2:?model.psd inside rig dir}; NAME=${3:?name}
 SECONDS_=${4:-12}; SIZE=${5:-1080}
@@ -22,7 +22,7 @@ for _ in $(seq 50); do curl -sf -o /dev/null "http://127.0.0.1:$PORT/" && break;
 rm -rf "frames_$NAME"
 POINTER_FLAG=--pointer; [ "${POINTER:-1}" = 0 ] && POINTER_FLAG=
 # record.js lives in the skill, so point node at the working dir's node_modules.
-NODE_PATH="${NODE_PATH:-$PWD/node_modules}" CHROME="$CHROME" node "$HERE/record.js" --url "http://127.0.0.1:$PORT/?obs=1&model=$MODEL" \
+NODE_PATH="${NODE_PATH:-$PWD/node_modules}" CHROME="$CHROME" node "$HERE/record.js" --url "http://127.0.0.1:$PORT/?obs=1&model=$MODEL${QUERY:+&$QUERY}" \
   --out "frames_$NAME" --seconds "$SECONDS_" --fps 60 --warmup 2 $POINTER_FLAG
 mkdir -p out
 "$PY" "$HERE/compose.py" --frames "frames_$NAME" --fps 60 --out "out/$NAME.mp4" --size "$SIZE" \

@@ -261,7 +261,7 @@ function fetchSource(path){
     return r.arrayBuffer();
   };
 }
-const SAMPLE_FILES={A:'chisato.psd',B:'chisato_b.psd'};
+const SAMPLE_FILES={B:'chisato_b.psd',AN:'anisphia.psd'};
 function loadSample(key='B'){const filename=SAMPLE_FILES[key];if(filename)return loadModel(fetchSource(filename),filename);}
 document.querySelectorAll('[data-sample]').forEach(button=>button.addEventListener('click',()=>loadSample(button.dataset.sample)));
 (function(){const miss=[];
@@ -1355,7 +1355,7 @@ if(OBS_MODE){
   sync.startPolling();
   if(CAMERA_MODE)setAuto('cam',true);
   // chisato-2.5d: open the bundled model straight away (?model= picks another).
-  {const path=RT.safeRelativePath(QUERY.get('model')||SAMPLE_FILES.A,'.psd');
+  {const path=RT.safeRelativePath(QUERY.get('model')||SAMPLE_FILES.B,'.psd');
    if(path)loadModel(fetchSource(path),path.split('/').pop());}
 }
 requestAnimationFrame(tick);
