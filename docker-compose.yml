@@ -1,19 +1,12 @@
-# Serves the rig (rig/) at https://chisato.nadif.dev through a Cloudflare tunnel.
-#   cp .env.example .env   # fill TUNNEL_TOKEN
+# Serves the rig (rig/) on 127.0.0.1:8766. https://chisato.nadif.dev reaches it through the
+# laptop's existing cloudflared (ingress chisato.nadif.dev -> http://localhost:8766).
 #   docker compose up -d
 services:
   web:
     image: nginx:1.27-alpine
     restart: unless-stopped
+    ports:
+      - "127.0.0.1:8766:80"
     volumes:
       - ./rig:/usr/share/nginx/html:ro
       - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf:ro
-
-  tunnel:
-    image: cloudflare/cloudflared:latest
-    restart: unless-stopped
-    command: tunnel --no-autoupdate run
-    environment:
-      TUNNEL_TOKEN: ${TUNNEL_TOKEN:?set TUNNEL_TOKEN in .env}
-    depends_on:
-      - web
